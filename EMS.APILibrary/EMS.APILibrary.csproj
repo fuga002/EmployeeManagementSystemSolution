@@ -20,8 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\Contracts\" />
-    <Folder Include="Repositories\Implementations\" />
+    <ProjectReference Include="..\EMS.BaseLibrary\EMS.BaseLibrary.csproj" />
   </ItemGroup>
 
 </Project>
