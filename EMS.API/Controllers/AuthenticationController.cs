@@ -23,4 +23,20 @@ public class AuthenticationController : ControllerBase
         return Ok(result);
     }
 
+    [HttpPost("login")]
+    public async Task<IActionResult> SignInAsync(Login? user)
+    {
+        if (user is null) return BadRequest("Model is empty");
+        var result = await _account.SigninAsync(user);
+        return Ok(result);
+    }
+
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> RefreshTokenAsync(RefreshToken? token)
+    {
+        if(token is null) return BadRequest("Model is empty");
+        var result = await _account.RefreshTokenAsync(token);
+        return Ok(result);
+    }
+
 }
