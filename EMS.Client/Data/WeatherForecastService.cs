@@ -1,3 +1,5 @@
+using EMS.BaseLibrary.DTOs;
+
 namespace EMS.Client.Data
 {
     public class WeatherForecastService
