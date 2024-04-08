@@ -6,6 +6,13 @@ public class GetHttpClient
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly LocalStorageService _localStorageService;
+
+    public GetHttpClient(IHttpClientFactory httpClientFactory, LocalStorageService localStorageService)
+    {
+        _httpClientFactory = httpClientFactory;
+        _localStorageService = localStorageService;
+    }
+
     private const string HeaderKey = "Authorization";
 
     public async Task<HttpClient> GetPrivateHttpClient()

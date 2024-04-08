@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.Client", "EMS.Client\EMS.Client.csproj", "{0D8270DC-B0C0-4DA1-9AD9-AAAFC7E241AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMS.Client", "EMS.Client\EMS.Client.csproj", "{0D8270DC-B0C0-4DA1-9AD9-AAAFC7E241AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.API", "EMS.API\EMS.API.csproj", "{88E71021-A6A6-4F59-BF62-4AC8C8C204A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMS.API", "EMS.API\EMS.API.csproj", "{88E71021-A6A6-4F59-BF62-4AC8C8C204A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.BaseLibrary", "EMS.BaseLibrary\EMS.BaseLibrary.csproj", "{34B82B13-6621-40C4-AECF-AC46EDE1EA83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMS.BaseLibrary", "EMS.BaseLibrary\EMS.BaseLibrary.csproj", "{34B82B13-6621-40C4-AECF-AC46EDE1EA83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.ClientLibrary", "EMS.ClientLibrary\EMS.ClientLibrary.csproj", "{5B79F5C8-F691-4F3E-84BB-3A51DFE2FB28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMS.ClientLibrary", "EMS.ClientLibrary\EMS.ClientLibrary.csproj", "{5B79F5C8-F691-4F3E-84BB-3A51DFE2FB28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.APILibrary", "EMS.APILibrary\EMS.APILibrary.csproj", "{924109AE-EEAC-4025-AA9C-B32C942422A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMS.APILibrary", "EMS.APILibrary\EMS.APILibrary.csproj", "{924109AE-EEAC-4025-AA9C-B32C942422A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,9 @@
+using Blazored.LocalStorage;
 using EMS.Client.Data;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using EMS.ClientLibrary.Helpers;
+using EMS.ClientLibrary.Services.Contracts;
+using EMS.ClientLibrary.Services.Implementations;
+using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +11,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+
+builder.Services.AddAuthorizationCore();
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddScoped<GetHttpClient>();
+builder.Services.AddScoped<LocalStorageService>();
+builder.Services.AddScoped<IUserAccountService, UserAccountService>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+
+builder.Services.AddHttpClient("SystemApiClient", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7026/");
+});
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7026/") });
 
 var app = builder.Build();
 
