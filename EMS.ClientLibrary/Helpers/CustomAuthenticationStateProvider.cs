@@ -44,6 +44,22 @@ public class CustomAuthenticationStateProvider:AuthenticationStateProvider
             "JwtAuth"));
     }
 
+    public async Task UpdateAuthenticationState(UserSession userSession)
+    {
+        var claimPrincipal = new ClaimsPrincipal();
+        if (userSession.Token != null || userSession.RefreshToken != null)
+        {
+            var serializeSession = Serializations.SerializationObj(userSession);
+            await _localStorageService.SetToken(serializeSession);
+            var getUserClaims = DecryptToken(userSession.Token);
+            claimPrincipal = SetClaimPrincipal(getUserClaims);
+        }
+        else
+        {
+            await _localStorageService.RemoveToken();
+        }
+        NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimPrincipal)));
+    }
 
     private static CustomUserClaims DecryptToken(string? jwtToken)
     {
@@ -58,4 +74,5 @@ public class CustomAuthenticationStateProvider:AuthenticationStateProvider
 
         return new CustomUserClaims(userId?.Value!, name?.Value!, email?.Value!, role?.Value!);
     }
+
 }
