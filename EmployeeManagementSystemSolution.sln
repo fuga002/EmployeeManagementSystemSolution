@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMS.ClientLibrary", "EMS.Cl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMS.APILibrary", "EMS.APILibrary\EMS.APILibrary.csproj", "{924109AE-EEAC-4025-AA9C-B32C942422A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMS.ClientExample", "EMS.ClientExample\EMS.ClientExample.csproj", "{429FC74E-B816-4878-91D7-138AD16ABDDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{924109AE-EEAC-4025-AA9C-B32C942422A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{924109AE-EEAC-4025-AA9C-B32C942422A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{924109AE-EEAC-4025-AA9C-B32C942422A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{429FC74E-B816-4878-91D7-138AD16ABDDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{429FC74E-B816-4878-91D7-138AD16ABDDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{429FC74E-B816-4878-91D7-138AD16ABDDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{429FC74E-B816-4878-91D7-138AD16ABDDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
