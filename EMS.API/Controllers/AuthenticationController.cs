@@ -1,11 +1,13 @@
 ﻿using EMS.APILibrary.Repositories.Contracts;
 using EMS.BaseLibrary.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EMS.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[AllowAnonymous]
 public class AuthenticationController : ControllerBase
 {
     private readonly IUserAccount _account;
