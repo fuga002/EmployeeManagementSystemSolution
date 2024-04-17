@@ -6,6 +6,8 @@ using EMS.ClientLibrary.Services.Implementations;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Syncfusion.Blazor;
+using Syncfusion.Blazor.Popups;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -25,4 +27,6 @@ builder.Services.AddHttpClient("SystemApiClient", client =>
 }).AddHttpMessageHandler<CustomHttpHandler>();
 /*builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });*/
 
+builder.Services.AddSyncfusionBlazor();
+builder.Services.AddScoped<SfDialogService>();
 await builder.Build().RunAsync();
