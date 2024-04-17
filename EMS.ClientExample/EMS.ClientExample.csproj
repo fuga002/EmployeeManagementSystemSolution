@@ -11,6 +11,9 @@
 	<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.16" PrivateAssets="all" />
+    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="25.1.39" />
+    <PackageReference Include="Syncfusion.Blazor.Popups" Version="25.1.39" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="25.1.39" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EMS.BaseLibrary\EMS.BaseLibrary.csproj" />
