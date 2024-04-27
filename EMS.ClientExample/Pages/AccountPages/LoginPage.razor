@@ -1,4 +1,5 @@
 ﻿@page "/identity/account/login"
+@using EMS.ClientExample.Pages.OtherPages
 @layout AuthenticationLayout
 <div class="container">
     <div class="row">
@@ -55,6 +56,12 @@
     public bool ShowLoadingButton { get; set; } = false;
     Login _user = new();
 
+    [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckUserAuthentication();
+    }
+    
     async Task HandleLogin()
     {
         ShowLoadingButton = true;
@@ -77,5 +84,13 @@
     private async Task DisplayDialog(string content, string title)
     {
         await DialogService.AlertAsync(content, title);
+    }
+    
+    private async Task CheckUserAuthentication()
+    {
+        var user = (await AuthenticationState).User;
+        bool isUserAuthenticated = user.Identity!.IsAuthenticated;
+        if(isUserAuthenticated)
+            NavManager.NavigateTo("/home/dashboard");
     }
 }

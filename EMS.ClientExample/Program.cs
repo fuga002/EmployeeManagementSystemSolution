@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using EMS.ClientExample;
+using EMS.ClientExample.ApplicationStates;
 using EMS.ClientLibrary.Helpers;
 using EMS.ClientLibrary.Services.Contracts;
 using EMS.ClientLibrary.Services.Implementations;
@@ -19,6 +20,8 @@ builder.Services.AddScoped<GetHttpClient>();
 builder.Services.AddScoped<LocalStorageService>();
 builder.Services.AddScoped<IUserAccountService, UserAccountService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+
+builder.Services.AddScoped<DepartmentState>();
 
 builder.Services.AddTransient<CustomHttpHandler>();
 builder.Services.AddHttpClient("SystemApiClient", client =>

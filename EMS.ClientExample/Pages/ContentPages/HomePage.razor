@@ -1,0 +1,20 @@
+﻿@page "/home/dashboard"
+@using EMS.ClientExample.Pages.AdminstrationPages
+<TableBanner></TableBanner>
+
+@code {
+    [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckUserAuthentication();
+    }
+
+    private async Task CheckUserAuthentication()
+    {
+        var user = (await AuthenticationState).User;
+        bool isUserAuthenticated = user.Identity!.IsAuthenticated;
+        if(!isUserAuthenticated)
+            NavManager.NavigateTo("/identity/account/login");
+    }
+
+}
