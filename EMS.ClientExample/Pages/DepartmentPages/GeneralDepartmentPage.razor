@@ -1,4 +1,5 @@
 ﻿@using EMS.ClientExample.ApplicationStates
+@using EMS.BaseLibrary.Entities
 @implements IDisposable 
 @inject DepartmentState DepartmentState
 
@@ -48,13 +49,23 @@
         </div>
     </div>
 }
-
+<GeneralDepartmentDialog @ref="generalDepartmentDialog"/>
 @code
 {
-    GeneralDepartmentDTO Department = new();
-
+    GeneralDepartment Department = new();
+    GeneralDepartmentDialog? generalDepartmentDialog;
     protected override void OnInitialized()
     {
         DepartmentState.GeneralDepartmentAction += StateHasChanged; 
+    }
+
+    void OpenDialog()
+    {
+        generalDepartmentDialog?.OpenDialog();
+    }
+    
+    public void Dispose()
+    {
+        DepartmentState.GeneralDepartmentAction -= StateHasChanged;
     }
 }

@@ -1,0 +1,42 @@
+﻿@using EMS.BaseLibrary.Entities
+@inject SfDialogService DialogService
+
+<SfDialog Width="250px" IsModal="true" ShowCloseIcon="true" @bind-Visible="IsVisible">
+    
+    <DialogTemplates>
+        <Header> Add Department</Header>
+        <Content>
+            <EditForm Model="Department" Enhance OnSubmit="Save">
+                <div class="card border-cuccess">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <InputText @bind-Value="Department.Name" class="form-control"></InputText>
+                        </div>
+                    </div>
+                </div>
+            </EditForm>
+        </Content>
+    </DialogTemplates>
+    
+    <DialogButtons>
+        <DialogButton Content="SAVE" Type="ButtonType.Submit" IsPrimary="true" OnClick="Save" ></DialogButton>
+    </DialogButtons>
+    
+</SfDialog>
+
+@code {
+    [Parameter] public GeneralDepartment Department { get; set; } = new();
+    private bool IsVisible { get; set; } = false;
+    public void OpenDialog()
+    {
+        IsVisible = true;
+        StateHasChanged();
+    }
+
+    async void Save()
+    {
+        if (string.IsNullOrEmpty(Department.Name))
+            await DialogService.AlertAsync("You need to provide Department name", "Alert!");
+    }
+}

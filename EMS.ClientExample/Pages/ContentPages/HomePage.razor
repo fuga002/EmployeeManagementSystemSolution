@@ -1,7 +1,8 @@
 ﻿@page "/home/dashboard"
 @using EMS.ClientExample.Pages.AdminstrationPages
-<TableBanner></TableBanner>
-
+@using EMS.ClientExample.Pages.DepartmentPages
+<TableBanner/>
+<GeneralDepartmentPage/>
 @code {
     [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
     protected override async Task OnInitializedAsync()

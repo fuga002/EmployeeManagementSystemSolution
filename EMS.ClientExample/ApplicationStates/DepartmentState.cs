@@ -14,6 +14,6 @@ public class DepartmentState
 
     private void ResetAllDepartments()
     {
-        throw new NotImplementedException();
+        ShowGeneralDepartment = false;
     }
 }
