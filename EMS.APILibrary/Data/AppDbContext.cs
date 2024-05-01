@@ -19,4 +19,11 @@ public class AppDbContext:DbContext
     public DbSet<SystemRole> SystemRoles { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<RefreshTokenInfo> RefreshTokenInfos { get; set; }
+    
+    public DbSet<Vacation> Vacations { get; set; }
+    public DbSet<VacationType> VacationsType { get; set; }
+    public DbSet<Overtime> Overtimes { get; set; }
+    public DbSet<OvertimeType> OvertimesTypes { get; set; }
+
+    public DbSet<Doctor> Doctors { get; set; }
 }
