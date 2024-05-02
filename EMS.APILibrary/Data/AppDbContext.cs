@@ -14,6 +14,9 @@ public class AppDbContext:DbContext
     public DbSet<GeneralDepartment> GeneralDepartments { get; set; }
     public DbSet<Department> Departments { get; set; }
     public DbSet<Branch> Branches { get; set; }
+    
+    public DbSet<Country> Countries { get; set; }
+    public DbSet<City> Cities { get; set; }
     public DbSet<Town> Towns { get; set; }
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     public DbSet<SystemRole> SystemRoles { get; set; }
