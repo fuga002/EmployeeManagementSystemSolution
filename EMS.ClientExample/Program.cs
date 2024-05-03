@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using EMS.BaseLibrary.Entities;
 using EMS.ClientExample;
 using EMS.ClientExample.ApplicationStates;
 using EMS.ClientLibrary.Helpers;
@@ -22,6 +23,18 @@ builder.Services.AddScoped<IUserAccountService, UserAccountService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
 builder.Services.AddScoped<DepartmentState>();
+
+builder.Services.AddScoped<IGenericServiceInterface<GeneralDepartment>, GenericServiceImplementation<GeneralDepartment>>();
+builder.Services.AddScoped<IGenericServiceInterface<Department>, GenericServiceImplementation<Department>>();
+builder.Services.AddScoped<IGenericServiceInterface<Branch>, GenericServiceImplementation<Branch>>();
+
+
+builder.Services.AddScoped<IGenericServiceInterface<Country>, GenericServiceImplementation<Country>>();
+builder.Services.AddScoped<IGenericServiceInterface<City>, GenericServiceImplementation<City>>();
+builder.Services.AddScoped<IGenericServiceInterface<Town>, GenericServiceImplementation<Town>>();
+
+
+builder.Services.AddScoped<IGenericServiceInterface<Employee>, GenericServiceImplementation<Employee>>();
 
 builder.Services.AddTransient<CustomHttpHandler>();
 builder.Services.AddHttpClient("SystemApiClient", client =>
