@@ -1,17 +1,15 @@
-﻿@using EMS.BaseLibrary.Entities
-@inject SfDialogService DialogService
-
+﻿
 <SfDialog Width="250px" IsModal="true" ShowCloseIcon="true" @bind-Visible="IsVisible">
     
     <DialogTemplates>
-        <Header> Add Department</Header>
+        <Header> @Title Department</Header>
         <Content>
-            <EditForm Model="Department" Enhance OnSubmit="Save">
+            <EditForm Model="GeneralDepartment" Enhance OnSubmit="Save">
                 <div class="card border-cuccess">
                     <div class="card-body">
                         <div class="form-group">
                             <label class="form-label">Name</label>
-                            <InputText @bind-Value="Department.Name" class="form-control"></InputText>
+                            <InputText @bind-Value="GeneralDepartment.Name" class="form-control"></InputText>
                         </div>
                     </div>
                 </div>
@@ -26,8 +24,10 @@
 </SfDialog>
 
 @code {
-    [Parameter] public GeneralDepartment Department { get; set; } = new();
+    [Parameter] public GeneralDepartment GeneralDepartment { get; set; } = new();
+    [Parameter] public EventCallback<GeneralDepartment> HandleSaveOperationEvent { get; set; }
     private bool IsVisible { get; set; } = false;
+    public string Title { get; set; } = "Add";
     public void OpenDialog()
     {
         IsVisible = true;
@@ -36,7 +36,14 @@
 
     async void Save()
     {
-        if (string.IsNullOrEmpty(Department.Name))
+        if (string.IsNullOrEmpty(GeneralDepartment.Name))
             await DialogService.AlertAsync("You need to provide Department name", "Alert!");
+        else
+            await HandleSaveOperationEvent.InvokeAsync(GeneralDepartment);
+    }
+
+    public void ChangeTitle(string title)
+    {
+        Title = title;
     }
 }
