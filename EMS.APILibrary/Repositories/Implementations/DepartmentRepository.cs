@@ -15,7 +15,7 @@ public class DepartmentRepository:IGenericRepositoryInterface<Department>
         _context = context;
     }
 
-    public async Task<List<Department>> GetAll() => await _context.Departments.ToListAsync();
+    public async Task<List<Department>> GetAll() => await _context.Departments.AsNoTracking().Include(gd => gd.GeneralDepartment).ToListAsync();
 
     public async Task<Department> GetById(int id) => await _context.Departments.FindAsync(id);
 

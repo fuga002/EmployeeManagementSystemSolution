@@ -57,10 +57,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowBlazorWebApp",
         config => 
-            config.WithOrigins("https://localhost:7016","http://localhost:5158", "https://localhost:7091","http://localhost:5189")
+            config.AllowAnyOrigin()/*WithOrigins("https://localhost:7016","http://localhost:5158", "https://localhost:7091","http://localhost:5189")*/
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .AllowCredentials());
+                /*.AllowCredentials()*/);
 });
 var app = builder.Build();
 
@@ -72,7 +72,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowBlazorWebApp");
+//app.UseCors("AllowBlazorWebApp");
+app.UseCors(options =>
+{
+    options.AllowAnyHeader();
+    options.AllowAnyMethod();
+    options.AllowAnyOrigin();
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

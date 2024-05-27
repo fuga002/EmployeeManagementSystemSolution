@@ -52,7 +52,7 @@ public class GenericServiceImplementation<T>:IGenericServiceInterface<T>
     public async Task<GeneralResponse> DeleteById(int id, string baseUrl)
     {
         var httpClient = await _httpClient.GetPrivateHttpClient();
-        var response = await httpClient.DeleteAsync($"{baseUrl}/Branch/delete/{id}");
+        var response = await httpClient.DeleteAsync($"{baseUrl}/delete/{id}");
         var result = await response.Content.ReadFromJsonAsync<GeneralResponse>();
         return result!;
     }

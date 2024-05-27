@@ -21,8 +21,11 @@ public class GeneralDepartmentRepository:IGenericRepositoryInterface<GeneralDepa
 
     public async Task<GeneralResponse> Insert(GeneralDepartment item)
     {
-        if (!await CheckName(item.Name)) return new GeneralResponse(false, "Department already added");
+        var checkIfNull = await CheckName(item.Name);
+        if (!checkIfNull) 
+            return new GeneralResponse(false, "General Department already added");
         _context.GeneralDepartments.Add(item);
+        await Commit();
         return Success();
     }
 

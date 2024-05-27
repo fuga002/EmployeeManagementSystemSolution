@@ -1,6 +1,7 @@
 ﻿@page "/home/dashboard"
 <TableBanner/>
 <GeneralDepartmentPage/>
+<DepartmentPage/>
 @code {
     [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
     protected override async Task OnInitializedAsync()
