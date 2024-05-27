@@ -11,6 +11,7 @@
 	<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.16" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.12" />
     <PackageReference Include="Syncfusion.Blazor.Popups" Version="25.2.5" />
     <PackageReference Include="Syncfusion.Blazor.Themes" Version="25.1.39" />
     <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="25.2.5" />
