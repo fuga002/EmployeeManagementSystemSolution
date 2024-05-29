@@ -124,6 +124,51 @@ public class UserAccountRepository:IUserAccount
         return new LoginResponse(true, "Token refreshed successfully", jwtToken, refreshToken);
     }
 
+    public async Task<List<ManageUser>> GetUsers()
+    {
+        var allUsers = await GetApplicationUsers();
+        var userRoles = await UserRoles();
+        var allRoles = await SystemRoles();
+
+        if (allUsers.Count == 0 || allRoles.Count == 0) return null!;
+
+        var users = new List<ManageUser>();
+        foreach (var user in allUsers)
+        {
+            var userRole = userRoles.FirstOrDefault(u => u.UserId == user.Id);
+            var roleName = allRoles.FirstOrDefault(u => u.Id == userRole!.Id);
+            users.Add(new ManageUser(){UserId = user.Id,Name = user.Fullname,Email = user.Email,Role = roleName!.Name!});
+        }
+
+        return users;
+    }
+
+    public async Task<GeneralResponse> UpdateUser(ManageUser manageUser)
+    {
+        var getRole = (await SystemRoles()).FirstOrDefault(r => r.Name!.Equals(manageUser.Role));
+        var userRole = await _appDbContext.UserRoles.FirstOrDefaultAsync(u => u.UserId == manageUser.UserId);
+        userRole!.RoleId = getRole!.Id;
+        await _appDbContext.SaveChangesAsync();
+        return new GeneralResponse(true, "User role updated successfully");
+    }
+
+    public async Task<List<SystemRole>> GetRoles() => await SystemRoles();
+
+
+    public async Task<GeneralResponse> DeleteUser(int userId)
+    {
+        var user = await _appDbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.Id == userId);
+        _appDbContext.ApplicationUsers.Remove(user!);
+        await _appDbContext.SaveChangesAsync();
+        return new GeneralResponse(true, "User successfully deleted");
+    }
+
+    private async Task<List<SystemRole>> SystemRoles() => await _appDbContext.SystemRoles.AsNoTracking().ToListAsync();
+    private async Task<List<UserRole>> UserRoles() => await _appDbContext.UserRoles.AsNoTracking().ToListAsync();
+
+    private async Task<List<ApplicationUser>> GetApplicationUsers() =>
+        await _appDbContext.ApplicationUsers.AsNoTracking().ToListAsync();
+
     private string GenerateToken(ApplicationUser user, string? role)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSection.Key!));

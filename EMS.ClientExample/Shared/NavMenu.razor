@@ -1,6 +1,4 @@
-﻿
-
-<AuthorizeView>
+﻿<AuthorizeView>
     <Authorized>
         <div class="top-row ps-3 navbar navbar-dark">
             <div class="container-fluid">
@@ -43,11 +41,11 @@
                     </NavLink>
                     <div class="nav-link p-2 text-white" style="margin-left:3rem; visibility:@DepartmentCssStyle">
                         <ul class="list-group">
-                            <li style="list-style:none;" class="cusorStyle"@onclick="GeneralDepartmentClicked">
-                                <a class="nav-link p-2" >
+                            <li style="list-style:none;" class="cusorStyle">
+                                <a class="nav-link p-2" @onclick="GeneralDepartmentClicked">
                                     <div class="hstack text-wrap">
                                         <span class="bi bi-file-medical fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
-                                        <span >General Dep</span>
+                                        <span>General Dep</span>
                                     </div>
                                 </a>
                             </li>
@@ -120,7 +118,7 @@
 </style>
 
 @code {
-    private bool collapseNavMenu = true;
+    private bool collapseNavMenu { get; set; } = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
@@ -130,7 +128,7 @@
     }
 
     private string DepartmentMargin { get; set; } = "-3.5rem";
-    private string CssStyle= "hidden";
+    private string CssStyle { get; set; }= "hidden";
     private bool ShowHide { get; set; } = false;
 
     private void ShowAdminMenuContainer()
@@ -148,7 +146,7 @@
         }
     }
 
-    private string DepartmentCssStyle = "hidden";
+    private string DepartmentCssStyle { get; set; } = "hidden";
     private bool ShowHideDepartment { get; set; } = false;
 
     private void ShowDepartmentContainer()

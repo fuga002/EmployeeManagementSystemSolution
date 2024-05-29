@@ -1,5 +1,6 @@
 using System.Net.Http.Json;
 using EMS.BaseLibrary.DTOs;
+using EMS.BaseLibrary.Entities;
 using EMS.BaseLibrary.Responses;
 using EMS.ClientLibrary.Helpers;
 using EMS.ClientLibrary.Services.Contracts;
@@ -43,10 +44,34 @@ public class UserAccountService:IUserAccountService
         return await result.Content.ReadFromJsonAsync<LoginResponse>();
     }
 
-    public async Task<WeatherForecast[]> GetWeatherForecast()
+    public async Task<List<ManageUser>> GetUsers()
     {
         var httpClient = await _getHttpClient.GetPrivateHttpClient();
-        var result = await httpClient.GetFromJsonAsync<WeatherForecast[]>("api/WeatherForecast");
+        var result = await httpClient.GetFromJsonAsync<List<ManageUser>>($"{AuthUrl}/users");
         return result!;
     }
+
+    public async Task<GeneralResponse> UpdateUser(ManageUser manageUser)
+    {
+        var httpClient =  _getHttpClient.GetPublicHttpClient();
+        var result = await httpClient.PutAsJsonAsync($"{AuthUrl}/update-user",manageUser);
+        return await result.Content.ReadFromJsonAsync<GeneralResponse>()!;
+    }
+
+    public async Task<List<SystemRole>> GetRoles()
+    {
+        var httpClient = await _getHttpClient.GetPrivateHttpClient();
+        var result = await httpClient.GetFromJsonAsync<List<SystemRole>>($"{AuthUrl}/roles");
+        return result!;
+    }
+
+    public async Task<GeneralResponse> DeleteUser(int userId)
+    {
+        var httpClient = await _getHttpClient.GetPrivateHttpClient();
+        var result = await httpClient.DeleteAsync($"{AuthUrl}/delete-user/{userId}");
+
+        if (!result.IsSuccessStatusCode) return new GeneralResponse(false, "Error occured");
+        return await result!.Content.ReadFromJsonAsync<GeneralResponse>();
+    }
+
 }

@@ -15,7 +15,7 @@ public class TownRepository:IGenericRepositoryInterface<Town>
         _context = context;
     }
 
-    public async Task<List<Town>> GetAll() => await _context.Towns.ToListAsync();
+    public async Task<List<Town>> GetAll() => await _context.Towns.AsNoTracking().Include(t => t.City).ToListAsync();
 
     public async Task<Town> GetById(int id) => await _context.Towns.FindAsync(id);
 
@@ -23,24 +23,26 @@ public class TownRepository:IGenericRepositoryInterface<Town>
     {
         if (!await CheckName(item.Name)) return new GeneralResponse(false, "Town already added");
         _context.Towns.Add(item);
+        await Commit();
         return Success();
     }
 
     public async Task<GeneralResponse> Update(Town item)
     {
-        var dep = await _context.Towns.FindAsync(item.Id);
-        if (dep is null) return NotFound();
-        dep.Name = item.Name;
+        var town = await _context.Towns.FindAsync(item.Id);
+        if (town is null) return NotFound();
+        town.Name = item.Name;
+        town.CityId = item.CityId;
         await Commit();
         return Success();
     }
 
     public async Task<GeneralResponse> DeleteById(int id)
     {
-        var dep = await _context.Towns.FindAsync(id);
-        if (dep is null) return NotFound();
+        var town = await _context.Towns.FindAsync(id);
+        if (town is null) return NotFound();
 
-        _context.Towns.Remove(dep);
+        _context.Towns.Remove(town);
         await Commit();
         return Success();
     }

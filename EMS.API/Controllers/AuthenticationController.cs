@@ -41,4 +41,26 @@ public class AuthenticationController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("users")]
+    public async Task<IActionResult> GetUsersAsync()
+    {
+        var users = await _account.GetUsers();
+        if (users == null) return NotFound();
+        return Ok(users);
+    }
+
+    [HttpGet("roles")]
+    public async Task<IActionResult> GetRoles()
+    {
+        var users = await _account.GetRoles();
+        if(users == null) return NotFound();
+        return Ok(users);
+    }
+
+    [HttpDelete("delete-user/{id:int}")]
+    public async Task<IActionResult> DeleteUser(int id)
+    {
+        var result = await _account.DeleteUser(id);
+        return Ok(result);
+    }
 }
