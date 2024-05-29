@@ -23,6 +23,7 @@ public class DepartmentRepository:IGenericRepositoryInterface<Department>
     {
         if (!await CheckName(item.Name)) return new GeneralResponse(false, "Department already added");
         _context.Departments.Add(item);
+        await Commit();
         return Success();
     }
 
@@ -31,6 +32,7 @@ public class DepartmentRepository:IGenericRepositoryInterface<Department>
         var dep = await _context.Departments.FindAsync(item.Id);
         if (dep is null) return NotFound();
         dep.Name = item.Name;
+        dep.GeneralDepartmentId = item.GeneralDepartmentId;
         await Commit();
         return Success();
     }

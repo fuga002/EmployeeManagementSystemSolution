@@ -10,5 +10,5 @@ public class City:BaseEntity
     
     //One to many relationship with Town
     [JsonIgnore]
-    public List<Town> Towns { get; set; }
+    public List<Town>? Towns { get; set; }
 }

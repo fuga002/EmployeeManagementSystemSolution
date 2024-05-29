@@ -15,7 +15,7 @@ public class BranchRepository:IGenericRepositoryInterface<Branch>
         _context = context;
     }
 
-    public async Task<List<Branch>> GetAll() => await _context.Branches.ToListAsync();
+    public async Task<List<Branch>> GetAll() => await _context.Branches.AsNoTracking().Include(b => b.Department).ToListAsync();
 
     public async Task<Branch> GetById(int id) => await _context.Branches.FindAsync(id);
 
@@ -23,24 +23,26 @@ public class BranchRepository:IGenericRepositoryInterface<Branch>
     {
         if (!await CheckName(item.Name)) return new GeneralResponse(false, "Department already added");
         _context.Branches.Add(item);
+        await Commit();
         return Success();
     }
 
     public async Task<GeneralResponse> Update(Branch item)
     {
-        var dep = await _context.Branches.FindAsync(item.Id);
-        if (dep is null) return NotFound();
-        dep.Name = item.Name;
+        var branch = await _context.Branches.FindAsync(item.Id);
+        if (branch is null) return NotFound();
+        branch.Name = item.Name;
+        branch.Department = item.Department;
         await Commit();
         return Success();
     }
 
     public async Task<GeneralResponse> DeleteById(int id)
     {
-        var dep = await _context.Branches.FindAsync(id);
-        if (dep is null) return NotFound();
+        var branch = await _context.Branches.FindAsync(id);
+        if (branch is null) return NotFound();
 
-        _context.Branches.Remove(dep);
+        _context.Branches.Remove(branch);
         await Commit();
         return Success();
     }

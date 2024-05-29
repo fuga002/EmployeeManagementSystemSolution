@@ -1,14 +1,14 @@
 @implements IDisposable
-@if (AllState.ShowDepartment)
+@if (AllState.ShowUser)
 {
     <div class="container mt-5">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card-header">
-                    <h4 class="float-start">Departments</h4>
+                    <h4 class="float-start">Manage Users</h4>@*
                     <button class="btn btn-outline-success float-end" @onclick="AddButtonClicked">
-                        <i class="bi bi-plus-circle-dotted">Add Department</i>
-                    </button>
+                        <i class="bi bi-plus-circle-dotted">Add Town</i>
+                    </button>*@
                 </div>
                 <div class="card-header" style="max-height:580px; overflow-x: hidden; overflow-y: scroll;">
                     <div class="card-body">
@@ -17,22 +17,24 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Id</th>
-                                    <th scope="col">General Department</th>
-                                    <th scope="col">Department</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Role</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (Departments is not null )
+                                @if (ManageUser is not null )
                                 {
                                     int count = 1;
-                                    foreach (var item in Departments)
+                                    foreach (var item in ManageUsers)
                                     {
                                         <tr>
                                             <th scope="row">@count</th>
-                                            <td>@item.Id</td>
-                                            <td>@item.GeneralDepartment?.Name</td> 
-                                            <td>@item.Name</td>
+                                            <td>@item.UserId</td>
+                                            <td>@item.Name</td> 
+                                            <td>@item.Email</td>
+                                            <td>@item.Role</td>
                                             <td>
                                                 <i class="bi bi-pencil text-info" id="cursorStyle"
                                                    @onclick="() => EditClicked(item)"></i>
@@ -46,7 +48,7 @@
                                 else
                                 {
                                     <tr>
-                                        <td colspan="5"><div class="alert alert-info text-center">No Department added yet!</div></td>
+                                        <td colspan="5"><div class="alert alert-info text-center">No User Registered yet!</div></td>
                                     </tr>
                                 }
                             </tbody>
@@ -57,83 +59,74 @@
         </div>
     </div>
 }
-<DepartmentDialog @ref="departmentDialog"
+<UserDialog @ref="UserDialog"
                   HandleSaveOperationEvent="HandleSaveOperationEvent"
-                  Department="Department"
-                  GeneralDepartments="GeneralDepartments"/>
+                  ManageUser="ManageUser"
+                  SystemRoles="SystemRoles"/>
+
+
+<style>
+    .cursorStyle {
+        cursor: pointer;
+    }
+</style>
+
 @code {
     public string Title { get; set; } = "Add";
-    DepartmentDialog departmentDialog;
-    Department Department = new();
-    public List<GeneralDepartment> GeneralDepartments { get; set; } = new();
-    public List<Department> Departments { get; set; } = new();
+    UserDialog UserDialog;
+    ManageUser ManageUser = new();
+    public List<SystemRole> SystemRoles { get; set; } = new();
+    public List<ManageUser> ManageUsers { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
-        await GetDepartments();
-        await GetGeneralDepartments();
+        await GetUsers();
+        await GetSystemRoles();
         AllState.Action += StateHasChanged;
     }
 
-    private async Task GetDepartments()
+    private async Task GetUsers()
     {
-            Departments = await DepartmentService.GetAll(Constants.DepartmentBaseUrl);
-
+        ManageUsers = await AccountService.GetUsers();
     }
 
-    private async Task GetGeneralDepartments()
+    private async Task GetSystemRoles()
     {
-            GeneralDepartments = await GeneralDepartmentService.GetAll(Constants.GeneralDepartmentBaseUrl);
+        SystemRoles = await AccountService.GetRoles();
     }
 
     void AddButtonClicked()
     {
-        if (departmentDialog == null)
-        {
-            Console.WriteLine("departmentDialog is not initialized");
-            return;
-        }
-        departmentDialog.ChangeTitle("Add");
-        Department = new();
+        ManageUser = new();
         OpenDialog();
     }
 
     void OpenDialog()
     {
-        departmentDialog?.OpenDialog();
+        UserDialog?.OpenDialog();
     }
 
-    private async Task HandleSaveOperationEvent()
+    private async Task HandleSaveOperationEvent(ManageUser manageUser)
     {
-        bool successCheck = false;
-        if (Department.Id > 0)
-        {
-            var result = await DepartmentService.Update(Department, Constants.DepartmentBaseUrl);
-            successCheck = await DisplayMessage(result.Flag, result.Message);
-        }
-        else
-        {
-            var response = await DepartmentService.Inset(Department, Constants.DepartmentBaseUrl);
-            successCheck = await DisplayMessage(response.Flag, response.Message);
-        }
+        var result = await AccountService.UpdateUser(manageUser);
+        bool successCheck = await DisplayMessage(result.Flag, result.Message);
 
         if (successCheck)
         {
-            Department = new();
-            await GetDepartments();
-            departmentDialog?.ChangeTitle("Add");
+            ManageUser = new();
+            await GetUsers();
         }
     }
 
-    private async Task DeleteClicked(Department dep)
+    private async Task DeleteClicked(ManageUser manageUser)
     {
-        bool confirm = await DialogService.ConfirmAsync($"Are you sure you wanna delete {dep.Name}?", "Confirm Delete");
+        bool confirm = await DialogService.ConfirmAsync($"Are you sure you wanna delete {manageUser.Name}?", "Confirm Delete");
         if (!confirm) return;
 
-        var response = await DepartmentService.DeleteById(dep.Id, Constants.DepartmentBaseUrl);
+        var response = await AccountService.DeleteUser(manageUser.UserId);
         var result = await DisplayMessage(response.Flag, response.Message);
         if (result)
-            await GetDepartments();
+            await GetUsers();
     }
 
     private async Task<bool> DisplayMessage(bool flag, string message)
@@ -150,10 +143,9 @@
         }
     }
 
-    private void EditClicked(Department dep)
+    private void EditClicked(ManageUser manageUser)
     {
-        departmentDialog?.ChangeTitle("Update");
-        Department = dep;
+        ManageUser = manageUser;
         OpenDialog();
     }
 
@@ -161,4 +153,5 @@
     {
         AllState.Action -= StateHasChanged;
     }
+
 }

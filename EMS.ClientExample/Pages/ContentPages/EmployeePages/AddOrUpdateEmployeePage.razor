@@ -1,0 +1,10 @@
+﻿@implements IDisposable 
+
+
+@code
+{
+    public void Dispose()
+    {
+        AllState.Action -= StateHasChanged;
+    }
+}

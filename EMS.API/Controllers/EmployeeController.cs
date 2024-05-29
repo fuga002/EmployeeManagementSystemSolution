@@ -6,9 +6,9 @@ namespace EMS.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CountryController : GenericController<Country>
+public class EmployeeController : GenericController<Employee>
 {
-    public CountryController(IGenericRepositoryInterface<Country> genericRepositoryInterface) : base(genericRepositoryInterface)
+    public EmployeeController(IGenericRepositoryInterface<Employee> genericRepositoryInterface) : base(genericRepositoryInterface)
     {
     }
 }

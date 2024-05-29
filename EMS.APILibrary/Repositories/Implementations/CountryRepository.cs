@@ -21,8 +21,9 @@ public class CountryRepository:IGenericRepositoryInterface<Country>
 
     public async Task<GeneralResponse> Insert(Country item)
     {
-        if (!await CheckName(item.Name)) return new GeneralResponse(false, "Department already added");
+        if (!await CheckName(item.Name)) return new GeneralResponse(false, "Country already added");
         _context.Countries.Add(item);
+        await Commit();
         return Success();
     }
 
@@ -45,7 +46,7 @@ public class CountryRepository:IGenericRepositoryInterface<Country>
         return Success();
     }
     
-    private static GeneralResponse NotFound() => new(false, "Sorry department not found");
+    private static GeneralResponse NotFound() => new(false, "Sorry country not found");
     private static GeneralResponse Success() => new(true, "Process completed");
     private async Task Commit() => await _context.SaveChangesAsync();
     
