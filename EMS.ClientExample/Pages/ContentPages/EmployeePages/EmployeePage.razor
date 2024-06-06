@@ -14,17 +14,17 @@
                         </button></div>
                         <div class="card-body">
                             <SfGrid DataSource="@Employees">
-                                <GridColums >
-                                    <GridColum HeaderText="Employee Image">
+                                <GridColumns >
+                                    <GridColumn HeaderText="Employee Image">
                                         <Template>
-                                            @{@*
+                                            @{
                                                 var employee = ( context as Employee);
                                                 <div class="image">
                                                     <img src="@employee!.Photo" alt="@employee.Name" width="150" height="150"/>
-                                                </div>*@
+                                                </div>
                                             }
                                         </Template>
-                                    </GridColum>
+                                    </GridColumn>
                                     <GridColumn Field=@nameof(Employee.CivilId) Headertext = "Civil Id"></GridColumn>
                                     <GridColumn Field=@nameof(Employee.FileNumber) Headertext = "File Number"></GridColumn>
                                     <GridColumn Field=@nameof(Employee.Name) Headertext = "Name"></GridColumn>
@@ -32,7 +32,15 @@
                                     <GridColumn Field=@nameof(Employee.JobName) Headertext = "Job Name"></GridColumn>
                                     <GridColumn Field=@nameof(Employee.Branch.Name) Headertext = "Branch"></GridColumn>
                                     <GridColumn Field=@nameof(Employee.Town.Name) Headertext = "Town"></GridColumn>
-                                </GridColums>
+                                    <GridColumn HeaderText="Menu" HeaderTextAlign="TextAlign.Left">
+                                        <Template>
+                                            @{
+                                                var employee = (context as Employee);
+                                                <i class="bi bi-menu text-primary" id = "cursorStyle" @onclick="()=>ShowMenuPopUp(employee!)"></i>
+                                            }
+                                        </Template>
+                                    </GridColumn>
+                                </GridColumns>
                             </SfGrid>
                         </div>
                         <div class="card-footer"></div>
@@ -62,13 +70,33 @@
 
 </AddOrUpdateEmployeePage>
 
-<AddOrUpdateEmployeePage ShowAddOrUpdateEmployee="ShowAddOrUpdatePage"/>
+@*<AddOrUpdateEmployeePage ShowAddOrUpdateEmployee="ShowAddOrUpdatePage"/>*@
+
+<EmployeeDetailPage EmployeeDetails="Employee"
+                    ShowDetailsPage="ShowDetailsPage" 
+                    HandleDetailsPageCloseBtnClicked="HandleDetailsPageCloseBtnClicked"/>
+
+<ContextMenu @ref="contextMenu" HandleDeleteClicked="DeleteClicked"
+             HandleEditClicked="EditClicked"
+             HandleViewClicked="ViewClicked"/>
+    
+
+
+@*<ContextMenu @ref="contextMenu" HandleDeleteClicked="DeleteClicked"
+             HandleEditClicked="EditClicked"
+             HandleViewClicked="ViewClicked"
+             HandleAddHealthClicked="AddHealthClicked"
+             HandleAddOvertimeClicked="AddOvertimeClicked"
+             HandleAddSanctionClicked="AddSanctionClicked"
+             HandleAddVacationClicked="AddVacationClicked">
+    
+</ContextMenu>*@
 
 @code {
 
     AddOrUpdateEmployeePage? addOrUpdateEmployee;
     public List<Employee> Employees { get; set; } = new();
-
+    public bool ShowDetailsPage { get; set; } = false;
     public List<Country> DefaultCountries { get; set; } = new();
     public List<City> DefaultCities { get; set; } = new();
     public List<Town> DefaultTowns { get; set; } = new();
@@ -80,15 +108,74 @@
     public Employee Employee { get; set; } = new();
 
 
+
+    void EditClicked()
+    {
+        addOrUpdateEmployee.Employee.Id = SelectedEmployee.Id;
+        addOrUpdateEmployee.EmployeeGroup1.Name = SelectedEmployee.Name;
+        addOrUpdateEmployee.EmployeeGroup1.TelephoneNumber = SelectedEmployee.TelephoneNumber;
+        addOrUpdateEmployee.EmployeeGroup1.FileNumber = SelectedEmployee.FileNumber;
+        addOrUpdateEmployee.EmployeeGroup1.Address = SelectedEmployee.Address;
+        addOrUpdateEmployee.EmployeeGroup1.CivilId = SelectedEmployee.CivilId;
+
+
+        addOrUpdateEmployee.EmployeeGroup2.JobName = SelectedEmployee.JobName;
+        addOrUpdateEmployee.EmployeeGroup2.Other = SelectedEmployee.Other;
+
+        addOrUpdateEmployee.GeneralDepartment = SelectedEmployee.Branch.Department.GeneralDepartment.Name;
+        addOrUpdateEmployee.Department = SelectedEmployee.Branch.Department.Name;
+        addOrUpdateEmployee.Branch = SelectedEmployee.Branch.Name;
+
+        addOrUpdateEmployee.Country = SelectedEmployee.Town.City.Country.Name;
+        addOrUpdateEmployee.City = SelectedEmployee.Town.City.Name;
+        addOrUpdateEmployee.Town = SelectedEmployee.Town.Name;
+
+        addOrUpdateEmployee.Title = "Update";
+        SelectedEmployee = new();
+        contextMenu.CloseContextMenu();
+        ShowAddOrUpdatePage = true;
+        ShowMainPage = false;
+    }
+
+    private async Task DeleteClicked()
+    {
+        contextMenu.CloseContextMenu();
+        bool confirm = await DialogService.ConfirmAsync($"Are you sure you wanna delete {SelectedEmployee.Name}?","Confirm Delete");
+        if(!confirm) return;
+
+        var response = await BranchService.DeleteById(SelectedEmployee.Id, Constants.EmployeeBaseUrl);
+        var result = await DisplayMessage(response.Flag, response.Message);
+        if (result)
+        {
+            SelectedEmployee = new();
+            await LoadEmployees();
+        }
+    }
+
+    private void ViewClicked()
+    {
+        Employee = SelectedEmployee;
+        contextMenu.CloseContextMenu();
+        ShowDetailsPage = true;
+        ShowMainPage = false;
+        SelectedEmployee = new();
+    }
+
+    void HandleDetailsPageCloseBtnClicked()
+    {
+        ShowDetailsPage = false;
+        ShowMainPage = true;
+    }
+    
     public List<Department> SelectedDepartments { get; set; } = new();
     public List<Branch> SelectedBranches { get; set; } = new();
     public List<City> SelectedCities { get; set; } = new();
     public List<Town> SelectedTowns { get; set; } = new();
 
-    protected async Task LoadDefaults()
+    private async Task LoadDefaults()
     {
         DefaultCountries = await CountryService.GetAll(Constants.CountryBaseUrl);
-        DefaultCities = await CityService.GetAll(Constants.CountryBaseUrl);
+        DefaultCities = await CityService.GetAll(Constants.CityBaseUrl);
         DefaultTowns = await TownService.GetAll(Constants.TownBaseUrl);
 
         DefaultGeneralDepartments = await GeneralDepartmentService.GetAll(Constants.GeneralDepartmentBaseUrl);
@@ -139,13 +226,13 @@
         ShowMainPage = true;
         ShowAddOrUpdatePage = false;
         await LoadEmployees();
+        SelectedEmployee = new();
     }
     
     
     private async Task LoadEmployees()
     {
         Employees = await EmployeeService.GetAll(Constants.EmployeeBaseUrl);
-        
     }
 
     public bool ShowMainPage { get; set; } = true;
@@ -155,6 +242,16 @@
     {
         ShowMainPage = false;
         ShowAddOrUpdatePage = true;
+    }
+    
+    //Context menu
+    public Employee SelectedEmployee { get; set; } = new();
+
+    ContextMenu contextMenu;
+    void ShowMenuPopUp(Employee employee)
+    {
+        SelectedEmployee = employee;
+        contextMenu.OpenContextMenu();
     }
     
     

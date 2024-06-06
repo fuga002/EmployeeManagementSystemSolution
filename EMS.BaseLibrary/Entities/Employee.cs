@@ -6,7 +6,6 @@ public class Employee:BaseEntity
 {
     [Required] public string? CivilId { get; set; } = string.Empty;
     [Required] public string? FileNumber { get; set; } = string.Empty;
-    [Required] public string? FullName { get; set; } = string.Empty;
     [Required] public string? JobName { get; set;} = string.Empty;
     [Required] public string ? Address { get; set; } =string.Empty;
     [Required,DataType(DataType.PhoneNumber)] public string? TelephoneNumber { get; set; } =string.Empty;

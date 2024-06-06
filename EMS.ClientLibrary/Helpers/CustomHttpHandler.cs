@@ -1,7 +1,6 @@
 using System.Net;
 using EMS.BaseLibrary.DTOs;
 using EMS.ClientLibrary.Services.Contracts;
-using Microsoft.IdentityModel.Tokens;
 
 namespace EMS.ClientLibrary.Helpers;
 
