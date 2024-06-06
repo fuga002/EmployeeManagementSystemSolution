@@ -12,15 +12,7 @@
     <main>
         <div class="top-row px-4">
             <ProfileDropDown></ProfileDropDown>
-            @*<AuthorizeView>
-                <Authorized>
-                    <a class="btn btn-none text-danger" @onclick="LogoutClicked">Logout</a>
-                </Authorized>
-                <NotAuthorized>
-                    <a class="btn btn-none" href="identity/account/login">Login</a>
-                    <a class="btn btn-none" href="identity/account/register">Register</a>
-                </NotAuthorized>
-            </AuthorizeView>*@
+
         </div>
 
         <article class="content px-4">
@@ -40,3 +32,14 @@
         NavManager.NavigateTo("/", forceLoad: true);
     }
 }
+
+
+@*<AuthorizeView>
+                <Authorized>
+                    <a class="btn btn-none text-danger" @onclick="LogoutClicked">Logout</a>
+                </Authorized>
+                <NotAuthorized>
+                    <a class="btn btn-none" href="identity/account/login">Login</a>
+                    <a class="btn btn-none" href="identity/account/register">Register</a>
+                </NotAuthorized>
+            </AuthorizeView>*@
